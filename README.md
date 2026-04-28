@@ -1,5 +1,7 @@
 # Unequal-patterns-of-vacant-housing-stock-across-U.S.-cities
 
+Git LFS is required to clone data within this repository.
+
 ## Overview
 The folders and files are:
 
@@ -7,7 +9,7 @@ The folders and files are:
 
 
 2. **Code**: folder includes the codes analysis
-  
+
 
 4. **Simulations**: folder includes the simulation code and the generated files
 
@@ -35,4 +37,3 @@ The folders and files are:
 - _Specialty_Count_cbsa.csv_: city-level count of specialties
 - _SpecialtyCount_Secondary.csv_: city-level count of specialties as primary specialty or secondary specialty
 - _SCALING_RESULT.csv_: results for 75 medical specialties
-
