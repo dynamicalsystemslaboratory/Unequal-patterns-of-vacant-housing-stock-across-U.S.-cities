@@ -1,13 +1,12 @@
 
 #----------------------------------------------------------
-# RUN Time_scaling.R before running this script
+# RUN 02_Transversal_scaling_overTime.R before running this script
 
 setwd("")  
-source("Code/Time_Scaling.R")
+source("Code/02_Transversal_scaling_overTime.R")
 #----------------------------------------------------------
 
 library(ggrepel)
-
 
 
 # Slope and intercept extrapolations ---------------------------------------------------------------------
@@ -205,7 +204,6 @@ p_intercept_comb <- ggplot() +
 p_intercept_comb
 
 p_combined <- (p_slope_comb  | p_intercept_comb) +
-  plot_annotation(tag_levels = "a") &
   theme(
     plot.tag = element_text(size = 12, face = "bold"),
     theme(text = element_text(family = "Arial"))
@@ -214,7 +212,7 @@ p_combined
 
 
 
-ggsave(filename = "Figures/SI_parametersProjections.pdf", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_5", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
