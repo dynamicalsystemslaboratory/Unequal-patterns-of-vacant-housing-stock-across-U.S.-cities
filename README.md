@@ -9,7 +9,7 @@ The repository is organized as follows:
 4. `Bifurcation.ipynb` generates the bifurcation plot in SI Fig. 25.
 5. `S8_check.nb` and `S12_check.nb` are Mathematica notebooks used to verify derivations in the Supplementary Information.
 
-
+###
 The **`Code/`** folder contains the scripts used for data processing, empirical analysis, robustness checks, and calibration:
 
 - `00_Process tracts shp.R`: Processes individual [2020 Census tract shapefiles](https://www.census.gov/geographies/mapping-files/2020/geo/tiger-line-file.html) and combines them into a single tract shapefile. 
@@ -22,7 +22,7 @@ The **`Code/`** folder contains the scripts used for data processing, empirical 
   Output: `ACSD_data_clean.rds`
 
 
--`00_create_clean_data.R`: Creates the main cleaned dataset used in the analysis. To run this script, download USPS housing vacancy data from [HUD](https://www.huduser.gov/portal/datasets/usps.html) and place it in the `Data/USPS/` folder.
+- `00_create_clean_data.R`: Creates the main cleaned dataset used in the analysis. To run this script, download USPS housing vacancy data from [HUD](https://www.huduser.gov/portal/datasets/usps.html) and place it in the `Data/USPS/` folder.
 
   Output: `clean_data.rds`
 
@@ -42,12 +42,12 @@ The **`Code/`** folder contains the scripts used for data processing, empirical 
   Output: SI Fig. 6
 
 
--`04_Projections.R`: Uses the scaling parameter extrapolations from `03_Parameter_extrapolation.R` and county-level population projections to generate per capita vacancy projections. To run this script, download the population projections from Hauer (2019) and place them in `Data/SSP_asrc/`. Note: run `03_Parameter_extrapolation.R` first.  
+- `04_Projections.R`: Uses the scaling parameter extrapolations from `03_Parameter_extrapolation.R` and county-level population projections to generate per capita vacancy projections. To run this script, download the population projections from Hauer (2019) and place them in `Data/SSP_asrc/`. Note: run `03_Parameter_extrapolation.R` first.  
 
   Output: SI Fig. 7  
 
 
--`05_Longitudinal_scaling.R`: Performs the longitudinal scaling analysis across individual MSAs in the main and S5.
+- `05_Longitudinal_scaling.R`: Performs the longitudinal scaling analysis across individual MSAs in the main and S5.
 
   Output: Fig. 2b; SI Fig. 10; SI Fig. 11; SI Table 4; `dfMSA_with_type.csv` containing the MSAs identified as being described by a single power law.
 
@@ -68,10 +68,12 @@ The **`Code/`** folder contains the scripts used for data processing, empirical 
 
 
 - `09_Exploratory.R`: Computes time series of vacant and total housing units and the annual rate of change in the housing stock in S6.
+
   Output: SI Fig. 5; SI Fig. 9; SI Fig. 12; SI Fig. 13  
 
 
 - `10_Calibration.ipynb`: Calibrates the mean-field model parameters described in S8.1 using `dfMSA_with_type.csv`.
+
   Output: SI Fig. 18; SI Fig. 19; SI Table 5  
 
 
