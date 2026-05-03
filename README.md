@@ -1,39 +1,94 @@
 # Unequal-patterns-of-vacant-housing-stock-across-U.S.-cities
 
-Git LFS is required to clone data within this repository.
+> **Note:** Git LFS is required to clone the data stored in this repository.
 
-## Overview
-The folders and files are:
-
-1. **Data**: folder includes the data files
-
-
-2. **Code**: folder includes the codes analysis
-
-
-4. **Simulations**: folder includes the simulation code and the generated files
+The repository is organized as follows:
+1. **`Data/`** contains the data files used in the analysis.
+2. **`Code/`** contains the scripts used for the empirical analysis.
+3. **`Simulations/`** contains the simulation code and generated data.
+4. `Bifurcation.ipynb` generates the bifurcation plot in SI Fig. 25.
+5. `S8_check.nb` and `S12_check.nb` are Mathematica notebooks used to verify derivations in the Supplementary Information.
 
 
-5. **`Bifurcation.ipynb`**: a .ipynb file includes the codes to generate the bifurcation plot
+The **`Code/`** folder contains the scripts used for data processing, empirical analysis, robustness checks, and calibration:
 
-6. **`SI_check.nb`**: Mathematica notebook used to verify all supplementary-information derivations for the model
+- `00_Process tracts shp.R`: Processes individual [2020 Census tract shapefiles](https://www.census.gov/geographies/mapping-files/2020/geo/tiger-line-file.html) and combines them into a single tract shapefile. 
+
+  Output: `all_tracts_2020.shp`
 
 
+- `00_ACSD_process_county_data.R`: Processes county-level American Community Survey data on total vacant housing units, occupied housing units, and vacancy status from 2010 to 2022.
 
-<!--
-2. **Statistical_analyses.ipynb**: a .ipynb file includes the codes for statistical analyses
-- function _silhouette_score_ output score of silhoutte analysis
-- funtion _f_oneway_ outputs statistical results of one way ANOVA
-- function _pairwise_tukeyhsd_ post-hoc comparisons using tukey's HSD test
+  Output: `ACSD_data_clean.rds`
 
-3. **data_preprocessing.ipynb**: a .ipynb file includes the codes to preprocess patient data
-- output dataframe _cbsa_new_
-** number of healthcare spending (_spend_mean_) **
-** per capita healthcare spending (_spend_per_capita_mean_) **
-** number of health encounters (_vol_mean_) **
-** per capita health encounters (_vol_per_capita_mean_) **
 
-5. **Data**: a list of datasets and zipped shapefiles.
-- _Specialty_Count_cbsa.csv_: city-level count of specialties
-- _SpecialtyCount_Secondary.csv_: city-level count of specialties as primary specialty or secondary specialty
-- _SCALING_RESULT.csv_: results for 75 medical specialties
+-`00_create_clean_data.R`: Creates the main cleaned dataset used in the analysis. To run this script, download USPS housing vacancy data from [HUD](https://www.huduser.gov/portal/datasets/usps.html) and place it in the `Data/USPS/` folder.
+
+  Output: `clean_data.rds`
+
+
+- `01_Transversal_scaling_maps.R`: Performs the transversal scaling analysis and generates maps and supplementary results in S1.2 and S9.1.
+
+  Output: Fig. 1; SI Fig. 2; SI Fig. 21; SI Fig. 22; SI Table 1  
+
+
+- `02_Transversal_scaling_overTime.R`: Performs transversal scaling analysis from 2010 to 2022 in the main and S4.
+
+  Output: Fig. 2a; SI Fig. 8  
+
+
+- `03_Parameter_extrapolation.R`: Uses the estimated transversal scaling parameters from 2010 to 2022 and extrapolates future values using weighted linear and spline regressions described in S3. Note: run `02_Transversal_scaling_overTime.R` first.
+ 
+  Output: SI Fig. 6
+
+
+-`04_Projections.R`: Uses the scaling parameter extrapolations from `03_Parameter_extrapolation.R` and county-level population projections to generate per capita vacancy projections. To run this script, download the population projections from Hauer (2019) and place them in `Data/SSP_asrc/`. Note: run `03_Parameter_extrapolation.R` first.  
+
+  Output: SI Fig. 7  
+
+
+-`05_Longitudinal_scaling.R`: Performs the longitudinal scaling analysis across individual MSAs in the main and S5.
+
+  Output: Fig. 2b; SI Fig. 10; SI Fig. 11; SI Table 4; `dfMSA_with_type.csv` containing the MSAs identified as being described by a single power law.
+
+
+- `06_Extra_robustness.R`: Runs additional robustness checks, including bootstrap analysis of the global scaling relationships (S1.1), scaling with population density (S1.3), and subgroup analyses by housing price appreciation, population growth from 2010 to 2022, and rent-to-income ratio (S2).
+
+  Output: SI Fig. 1; SI Fig. 4; SI Tables 1–3  
+
+
+- `07_Transversal_scaling_UrbanAreas.R`: Repeats the transversal scaling analysis using urban areas and urban areas aggregated by MSAs described in S1.
+
+  Output: SI Fig. 3  
+
+
+- `08_Spatial_inequality.R`: Assesses spatial inequality and the distribution of vacancy within MSAs, including the spatial Gini index described in S9.2.
+
+  Output: SI Fig. 23  
+
+
+- `09_Exploratory.R`: Computes time series of vacant and total housing units and the annual rate of change in the housing stock in S6.
+  Output: SI Fig. 5; SI Fig. 9; SI Fig. 12; SI Fig. 13  
+
+
+- `10_Calibration.ipynb`: Calibrates the mean-field model parameters described in S8.1 using `dfMSA_with_type.csv`.
+  Output: SI Fig. 18; SI Fig. 19; SI Table 5  
+
+
+### 
+The `Simulations/` folder contains:
+
+- `S7_Heterogeneity_simulations.ipynb`: Compares the mean-field approximation of the model with heterogeneous stochastic simulations in SI S7.
+
+  Output: SI Fig. 14-16  
+
+
+- `S7_Scaling_heterogeneity_simulations.ipynb`: Checks the scaling of heterogeneous stochastic simulations. This notebook uses the data in `abm_outputs_scaling_hpc`, generated by `S7_Heterogeneity_simulations.ipynb`.
+  
+  Output: SI Fig. 17
+
+
+- `S10_Network_simulations.ipynb`: Compares the mean-field model with stochastic simulations using different network topologies in SI S10.
+
+  Output: SI Fig. 24  
+
