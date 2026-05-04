@@ -288,7 +288,6 @@ p_predictions <- (p_barplot | p_alluv_1) +
     theme(text = element_text(family = "Arial"))
   )
 p_predictions
-#ggsave(filename = "SI_Fig_6.pdf", plot = p_predictions, width = 180, height = 70, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 

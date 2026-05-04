@@ -183,7 +183,7 @@ final_p <- ggdraw() +
 
 final_p
 
-##ggsave(filename = "MSA_vacancy_map.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+##ggsave(filename = "Fig1_a.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 ### Plot with scaling ----------------------------------------------------------
@@ -216,7 +216,7 @@ vacant_plot <- ggplot(df_MSA, aes(x = POPESTIMATE, y = Vacant)) +
   theme(text = element_text(family = "Arial"))
 vacant_plot
 
-#ggsave(filename = "MSA_vacant_2022.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "Fig_b.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -280,7 +280,7 @@ final_p <- ggdraw() +
 
 final_p
 
-#ggsave(filename = "MSA_occupancy_map.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "Fig1_c.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 ### Plot with scaling ----------------------------------------------------------
@@ -309,7 +309,7 @@ occupied_plot <- ggplot(df_MSA, aes(x = POPESTIMATE, y = Occupied)) +
   )
 occupied_plot 
 
-#ggsave(filename = "MSA_occupied_2022.pdf", plot = occupied_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "Fig1_d.pdf", plot = occupied_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -473,7 +473,7 @@ p <- (p_ACHS_vac_noSeasonal_ratio + p_ACHS_vac_other_ratio) / (p_USPS_vac_ratio 
   )
 p
 
-#ggsave(filename = "SI_Fig_18.pdf", plot = p, width = 180, height = 90, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_22.pdf", plot = p, width = 180, height = 90, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -530,7 +530,7 @@ p_ratio_vac <- ggplot() +
 p_ratio_vac
 
 
-#ggsave(filename = "SI_MSA_vacancyRatio_map.pdf", plot = p_ratio_vac, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig21_a.pdf", plot = p_ratio_vac, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -654,7 +654,7 @@ vacant_plot <- ggplot(df_county, aes(x = POPESTIMATE, y = Vacant)) +
   theme(text = element_text(family = "Arial"))
 vacant_plot
 
-#ggsave(filename = "SI_County_vacant_2022.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_2b.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -715,7 +715,7 @@ final_p <- ggdraw() +
 
 final_p
 
-#ggsave(filename = "SI_county_occupancy_map.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_2c.pdf", plot = final_p, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 ### Plot with scaling ----------------------------------------------------------
@@ -741,7 +741,7 @@ occupied_plot <- ggplot(df_county, aes(x = POPESTIMATE, y = Occupied)) +
   theme(text = element_text(family = "Arial"))
 occupied_plot 
 
-#ggsave(filename = "SI_county_occupied_2022.pdf", plot = occupied_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig2_d.pdf", plot = occupied_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 

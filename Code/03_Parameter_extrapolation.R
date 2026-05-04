@@ -212,7 +212,7 @@ p_combined
 
 
 
-#ggsave(filename = "SI_Fig_5", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig6", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 

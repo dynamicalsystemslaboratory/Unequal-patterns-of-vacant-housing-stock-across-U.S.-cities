@@ -350,7 +350,7 @@ p <- (p_Gini / p_SGI ) +
     theme(text = element_text(family = "Arial"))
   )
 p
-#ggsave(filename = "SI_Fig19_maps.pdf", plot = p, width = 110, height = 110, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig23_maps.pdf", plot = p, width = 110, height = 110, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 

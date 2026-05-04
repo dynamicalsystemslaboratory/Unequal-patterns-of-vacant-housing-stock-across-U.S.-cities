@@ -314,7 +314,7 @@ p_evolution <- (p_vac_evol | p_perCapita_vac_evol) +
     text = element_text(family = "Arial")
   )
 p_evolution
-#ggsave(filename = "SI_fig_8.pdf", plot = p_evolution, width = 180, height = 75, units="mm", dpi=900, device=cairo_pdf)
+#ggsave(filename = "SI_fig_9.pdf", plot = p_evolution, width = 180, height = 75, units="mm", dpi=900, device=cairo_pdf)
 
 
 
@@ -370,7 +370,7 @@ p <- (p_total_vac | p_total_vac_perCapita) +
     text = element_text(family = "Arial")
   )
 p
-#ggsave(filename = "SI_fig_9.pdf", plot = p, width = 180, height = 70, units="mm", dpi=900, device=cairo_pdf)
+#ggsave(filename = "SI_fig_5.pdf", plot = p, width = 180, height = 70, units="mm", dpi=900, device=cairo_pdf)
 
 
 
