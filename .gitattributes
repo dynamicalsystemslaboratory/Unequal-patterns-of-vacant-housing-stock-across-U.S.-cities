@@ -7,3 +7,4 @@
 *.cpg filter=lfs diff=lfs merge=lfs -text
 *.xml filter=lfs diff=lfs merge=lfs -text
 *.shp filter=lfs diff=lfs merge=lfs -text
+Bifurcation.ipynb filter=lfs diff=lfs merge=lfs -text
