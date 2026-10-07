@@ -11,12 +11,14 @@ loadfonts(device = "win")
 setwd("")   # Path for working folder
 
 
+
 #---------------------------------------------------------------------------------------------------------
 #------------------------------------------------------------ DATA ---------------------------------------
 ### Load Data
 data <- readRDS("Data/clean_data.rds")
 ACSD_data <- readRDS("Data/ACSD house/ACSD_data_clean.rds")
 Census2020 <- read_excel("Data/DECENNIALPL2020.H1-2025-03-26T211423.xlsx", sheet = 2)
+
 
 # Crosswalks 
 MSA <- read_excel("Data/qcew-county-msa-csa-crosswalk.xlsx", sheet = 3)
@@ -146,7 +148,7 @@ p_boxplot <- (p_total_change | p_pop_change) +
   )
 p_boxplot
 
-#ggsave(filename = "SI_Fig_12.pdf", plot = p_boxplot, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_13.pdf", plot = p_boxplot, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -206,7 +208,110 @@ p_rate_per_city <- (p_rate_per_city_total | p_rate_per_city_vac) +
     theme(text = element_text(family = "Arial"))
   )
 p_rate_per_city
-#ggsave(filename = "SI_Fig_13.pdf", plot = p_rate_per_city, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_14.pdf", plot = p_rate_per_city, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+
+
+
+
+
+
+### Plots ----------------------------------------------------------------------
+pop_colors <- c(
+  "<160,000" = "#F4A261",
+  "160,000-400,000" = "#8AB17D",
+  "400,000-1,200,000" = "#2A9D8F",
+  ">1,200,000" = "#264653"
+)
+
+# Create fixed 2020 population groups
+msa_pop_2020 <- dfMSA %>%
+  filter(year == 2010) %>%
+  dplyr::select(MAS_Code, pop_2020 = POPESTIMATE) %>%
+  distinct(MAS_Code, .keep_all = TRUE) %>%
+  mutate(
+    pop_group = case_when(
+      pop_2020 < 160000 ~ "<160,000",
+      pop_2020 >= 160000 & pop_2020 < 400000 ~ "160,000-400,000",
+      pop_2020 >= 400000 & pop_2020 < 1200000 ~ "400,000-1,200,000",
+      pop_2020 >= 1200000 ~ ">1,200,000"),
+    pop_group = factor(pop_group, levels = names(pop_colors))
+  )
+
+# Add fixed 2020 groups back to all years
+dfMSA2 <- dfMSA %>%
+  left_join(msa_pop_2020, by = "MAS_Code") %>%
+  mutate(perCapita_vac = Vacant / POPESTIMATE)
+
+
+### Plot total Vaacant houses for each group per year
+
+vacant_group_year <- dfMSA2 %>%
+  group_by(year, pop_group) %>%
+  summarise(
+    total_vacant = sum(Vacant, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+vacant_group_year$log_total_vacant <- log(vacant_group_year$total_vacant)
+p_total_vacant_groups <- ggplot(vacant_group_year, aes(x = year, y = log_total_vacant, color = pop_group, group = pop_group)) +
+  geom_line(linewidth = 0.4) +
+  scale_color_manual(values = pop_colors, name = "Population group") +
+  scale_x_continuous(breaks = sort(unique(vacant_group_year$year))) +
+  scale_y_continuous(limits = c(13.5, 16), expand = expansion(mult = c(0, 0))) +
+  labs(x = "Year", y = "ln(Total vacant housing units)") +
+  theme_classic(base_size = 8) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 1),
+    plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
+    text = element_text(family = "Arial"),
+    legend.position = "none"
+  )
+
+p_total_vacant_groups
+
+
+### ----------------------------------------------------------------------------
+### Plot of Total population vs. year (circle size indicate the per capita) ----
+
+pop_group_year <- dfMSA2 %>%
+  group_by(year, pop_group) %>%
+  summarise(
+    total_population = sum(POPESTIMATE, na.rm = TRUE),
+    total_vacant = sum(Vacant, na.rm = TRUE),
+    perCapita_vac = total_vacant / total_population,
+    .groups = "drop")
+
+pop_group_year$log_total_population <- log(pop_group_year$total_population)
+
+p_total_pop_groups <- ggplot(pop_group_year, aes(x = year, y = log_total_population, group = pop_group)) +
+  geom_line(aes(color = pop_group), linewidth = 0.2) +
+  geom_point(aes(size = perCapita_vac, fill = pop_group), shape = 21, color = "black", stroke = 0.2, alpha = 0.9) +
+  scale_color_manual(values = pop_colors, name = "Population group", drop = FALSE) +
+  scale_fill_manual(values = pop_colors, name = "Population group", drop = FALSE) +
+  scale_size_continuous(name = "Vacant units per capita", range = c(0.1, 3.5)) +
+  scale_y_continuous(limits = c(16, 19), expand = expansion(c(0, 0.0))) +
+  scale_x_continuous(breaks = sort(unique(pop_group_year$year))) +
+  labs(x = "Year", y = "ln(Total population)") +
+  theme_classic(base_size = 8) +
+  theme(
+    plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
+    axis.text.x = element_text(angle = 0, hjust = 1),
+    text = element_text(family = "Arial"),
+    legend.position = "none"
+  )
+p_total_pop_groups
+
+
+p <- (p_total_vacant_groups | p_total_pop_groups) +
+  plot_annotation(tag_levels = "a") &
+  theme(
+    plot.tag = element_text(size = 10, face = "bold"),
+    text = element_text(family = "Arial"))
+p
+
+#ggsave(filename = "Fig2_b.pdf", plot = p_total_pop_groups, width = 70, height = 60, units="mm", dpi=900, device=cairo_pdf)
+
+
 
 
 
@@ -214,110 +319,6 @@ p_rate_per_city
 
 ### ----------------------------------------------------------------------------
 ### Supplementary figures ------------------------------------------------------
-
-df_t <- dfMSA 
-
-### Fit cross-sectional scaling each year --------------------------------------
-# log10(Vacant) = intercept + beta * log10(POPESTIMATE) so Y0 = 10^(intercept)
-
-scale_year <- df_t %>%
-  group_by(year) %>%
-  do({
-    fit <- lm(log10(Vacant) ~ log10(POPESTIMATE), data = .)
-    
-    tibble(
-      intercept = coef(fit)[1],
-      beta = coef(fit)[2],
-      Y0 = 10^(coef(fit)[1]),
-      r2 = summary(fit)$r.squared
-    )
-  }) %>%
-  ungroup()
-
-
-
-# Population sizes of 4 representative city sizes
-pop_reps <- tibble(
-  pop_group = factor(
-    c("250,000", "500,000", "1,000,000", "2,500,000"),
-    levels = c("250,000", "500,000", "1,000,000", "2,500,000")
-  ),
-  N_fixed = c(2.5e5, 5e5, 1e6, 2.5e6)
-)
-
-
-### Compute the trajectories from the scaling law ------------------------------
-#V_hat = Y0 * N^beta
-#frac_hat = V_hat / N
-
-implied_traj <- expand_grid(
-  year = sort(unique(scale_year$year)),
-  pop_group = levels(pop_reps$pop_group)
-) %>%
-  left_join(pop_reps, by = "pop_group") %>%
-  left_join(scale_year, by = "year") %>%
-  mutate(
-    V_hat = Y0 * (N_fixed^beta),
-    frac_hat = V_hat / N_fixed,
-    frac_hat_pct = 100 * frac_hat
-  ) %>%
-  arrange(pop_group, year)
-
-
-### Plots ----------------------------------------------------------------------
-pop_colors <- c(
-  "250,000" = "#F4A261",
-  "500,000" = "#8AB17D",
-  "1,000,000" = "#2A9D8F",
-  "2,500,000" = "#264653"
-)
-
-
-p_vac_evol <- ggplot(implied_traj, aes(x=year, y=V_hat, color=pop_group, group=pop_group)) +
-  geom_point(size = 1) +
-  scale_color_manual(values = pop_colors) +
-  scale_x_continuous(breaks = sort(unique(implied_traj$year))) +
-  scale_y_continuous(
-    breaks = c(seq(8000, 90000, by = 20000), 110000), expand = c(0, 0), labels = scales::comma) +
-  coord_cartesian(ylim = c(8000, 110000)) +
-  labs(x = "Year",y = "Vacant housing units", color = "Population") +
-  theme_classic(base_size = 10) +
-  theme(
-    plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"), #t,r,b,l
-    axis.text.x = element_text(angle = 45, hjust = 1), 
-    legend.position = "none",
-    text = element_text(family = "Arial")
-  )
-p_vac_evol
-
-
-p_perCapita_vac_evol  <- ggplot(implied_traj, aes(x=year, y=frac_hat, color=pop_group, group=pop_group)) +
-  geom_point(size = 1) +
-  scale_color_manual(values = pop_colors) +
-  scale_x_continuous(breaks = sort(unique(implied_traj$year))) +
-  scale_y_continuous(limits = c(0.03, 0.05), expand = c(0, 0)) +
-  labs(x = "Year", y = "Per capita vacant housing units", color = "Population") +
-  theme_classic(base_size = 10) +
-  theme(
-    plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"), #t,r,b,l
-    axis.text.x = element_text(angle = 45, hjust = 1), 
-    legend.position = "none",
-    text = element_text(family = "Arial")
-  )
-
-p_evolution <- (p_vac_evol | p_perCapita_vac_evol) +
-  plot_layout(guides = "collect") +
-  plot_annotation(tag_levels = "a") &
-  theme(
-    legend.position = "right",
-    plot.tag = element_text(size = 12, face = "bold"),
-    text = element_text(family = "Arial")
-  )
-p_evolution
-#ggsave(filename = "SI_fig_9.pdf", plot = p_evolution, width = 180, height = 75, units="mm", dpi=900, device=cairo_pdf)
-
-
-
 
 ### Plot of total and per capita vacant housing units 2010-2022 ----------------
 

@@ -134,8 +134,7 @@ dfMSA <- dfMSA %>%
     Occupied = sum(Occupied, na.rm = TRUE),
     Total = sum(Total, na.rm = TRUE),
     POPESTIMATE = sum(POPESTIMATE, na.rm = TRUE),
-    .groups = "drop"
-  )
+    .groups = "drop")
 
 
 
@@ -188,49 +187,7 @@ p <- ggplot(df_tmp, aes(x = POPESTIMATE, y = Vacant)) +
 p
 
 
-#ggsave(filename = "G:/My Drive/NatCities review/[rev] Longitudinal scaling_inset_a.pdf", plot=p, width=36, height=26, units="mm", dpi=900, device=cairo_pdf)
-
-
-
-
-### Longitudinal scaling for all MSAs with Denver, CO in blue ------------------
-code <- "C1974"
-df_tmp <- dfMSA %>% filter(MAS_Code == code)
-
-
-### Inset plot
-m <- lm(log10(Vacant) ~ log10(POPESTIMATE), data = df_tmp)
-beta <- coef(m)[2]
-a <- 10^(coef(m)[1])
-
-# prediction grid on the original x-scale
-xgrid <- seq(min(df_tmp$POPESTIMATE, na.rm = TRUE), max(df_tmp$POPESTIMATE, na.rm = TRUE), length.out = 200)
-
-pred_df <- data.frame(
-  POPESTIMATE = xgrid,
-  Vacant = a * xgrid^beta
-)
-
-p <- ggplot(df_tmp, aes(x = POPESTIMATE, y = Vacant)) +
-  geom_point(color = "darkblue", size = 1) +
-  geom_line(data = pred_df, aes(x = POPESTIMATE, y = Vacant), color = "black", linewidth = 0.2) +
-  annotate( "text", x = min(df_tmp$POPESTIMATE, na.rm = TRUE), y = max(df_tmp$Vacant, na.rm = TRUE) * 0.9,
-            label = paste0(
-              "β = ", sprintf("%.3f", beta),
-              "\nR² = ", sprintf("%.3f", summary(m)$r.squared)),
-            hjust = 0, vjust = 1, size = 1) +
-  labs(title = paste0(unique(df_tmp$MAS_Title), " (", code, ")"), x = "Population", y = "Vacant housing units") +
-  theme_bw(base_size = 5) +
-  theme(
-    panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 2),
-    plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
-    text = element_text(family = "Arial"),
-    legend.position = "none"
-  )
-p
-
-#ggsave(filename = "G:/My Drive/NatCities review/[rev] Longitudinal scaling_inset_a.pdf", plot=p, width=36, height=26, units="mm", dpi=900, device=cairo_pdf)
+#ggsave(filename = "Longitudinal scaling_insetFig_3a.pdf", plot=p, width=36, height=26, units="mm", dpi=900, device=cairo_pdf)
 
 
 
@@ -244,8 +201,8 @@ coeftest(city_lm, vcov = vcovHC(city_lm, type = "HC2"))
 
 #----------------------------------------------------------
 #----------------------------------------------------------
-### Here we visually inspect the trajectories of all MSAs and classify them according 
-### to their trajectories. If they are well described by a single power law they are Type 1
+### Here we visually inspect the trajectories of all MSAs and classify them according to their trajectories. 
+### If they are well described by a single power law they are Type 1
 ### If they seem to follow 2 power laws - Type 2
 ### other
 

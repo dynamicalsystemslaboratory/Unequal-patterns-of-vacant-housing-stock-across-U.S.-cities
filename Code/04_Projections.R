@@ -190,8 +190,7 @@ alluv_df <- alluv_df %>%
 pop_colors <- c(
   "S" = "#F4A261",
   "M" = "#2A9D8F",
-  "L" = "#264653"
-)
+  "L" = "#264653")
 
 
 ### Plot horizontal bar chart
@@ -250,8 +249,8 @@ dummy <- data.frame(
   node_left = "gap_block",
   node_right = NA,
   n = 15, # height of the gap
-  fill= "white"
-)
+  fill= "white")
+
 df2 <- bind_rows(df, dummy)
 
 # Make the axis factors in desired order
@@ -274,8 +273,7 @@ p_alluv_1 <- ggplot(df2, aes(axis1 = node_left, axis2 = node_right, y = n)) +
     axis.text.x = element_blank(),
     panel.grid = element_blank(),
     legend.position = "none",
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   labs(y = NULL, x = NULL)
 
 p_alluv_1

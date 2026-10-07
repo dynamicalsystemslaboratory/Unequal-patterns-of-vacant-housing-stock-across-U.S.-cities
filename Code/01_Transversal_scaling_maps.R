@@ -128,23 +128,18 @@ map_population <- ggplot() +
   geom_point(
     data = df_MSA,
     aes(x = x, y = y, size = POPESTIMATE, fill = perCapita_vac),
-    shape = 21, color = "lightgrey", alpha = 0.8
-  ) +
+    shape = 21, color = "lightgrey", alpha = 0.8) +
   scale_fill_gradientn(
     colors = reds,
     name = "Vacant housing units per capita",
     trans = "log",
     na.value = "blue",
     breaks = custom_breaks,
-    guide = "none"
-  ) +
+    guide = "none") +
   scale_size(
     range = c(1, 11),
     labels = scales::comma,  
-    guide = guide_legend(
-      override.aes = list(fill = "#999090", color = "white", shape = 21, alpha = 1)
-    )
-  ) +
+    guide = guide_legend(override.aes = list(fill = "#999090", color = "white", shape = 21, alpha = 1))) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
@@ -154,8 +149,7 @@ map_population <- ggplot() +
     axis.line = element_blank(),
     panel.grid = element_blank(),
     legend.position = c(0.8, 0.8),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   labs(size = "Population")
 
 
@@ -211,12 +205,11 @@ vacant_plot <- ggplot(df_MSA, aes(x = POPESTIMATE, y = Vacant)) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.4, 0.4, 0.2, 0.2, "cm"), #t,r,b,l
-    legend.position = "none"
-  )+
+    legend.position = "none") +
   theme(text = element_text(family = "Arial"))
 vacant_plot
 
-#ggsave(filename = "Fig_b.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "Fig1_b.pdf", plot = vacant_plot, width = 60, height = 60, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -238,10 +231,7 @@ map_population <- ggplot() +
   scale_fill_gradientn(colors = greens, name = "Occupied housing units per capita", trans = "log",
     na.value = "blue", breaks = custom_breaks, guide = "none") +
   scale_size(range = c(1, 11), labels = scales::comma,  
-    guide = guide_legend(
-      override.aes = list(fill = "#999090", color = "white", shape = 21, alpha = 1)
-    )
-  ) +
+    guide = guide_legend(override.aes = list(fill = "#999090", color = "white", shape = 21, alpha = 1))) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
@@ -251,8 +241,7 @@ map_population <- ggplot() +
     axis.line = element_blank(),
     panel.grid = element_blank(),
     legend.position = c(0.8, 0.8),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   labs(size = "Population")
 
 
@@ -370,8 +359,7 @@ dfMSACensus <- dfMSACensus %>%
     Occupied_Census = sum(Occupied_Census, na.rm = TRUE),
     Total_Census = sum(Total_Census, na.rm = TRUE),
     POPESTIMATE = sum(POPESTIMATE, na.rm = TRUE),
-    .groups = "drop"
-  )
+    .groups = "drop")
 dfMSACensus <- dfMSACensus[dfMSACensus$Vacant_Census > 0, ]
 
 MSA_vac <- lm(log(Vacant_Census) ~ log(POPESTIMATE), data = dfMSACensus)
@@ -391,8 +379,7 @@ p_ACHS_vac_ratio <- ggplot(df_MSA, aes(x = ratio_vac)) +
   theme(
     plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"),
     panel.grid = element_blank(),
-    text = element_text(family = "Arial")
-    )+
+    text = element_text(family = "Arial"))+
   xlab("Percentage of vacant housing units") + 
   ylab("Frequency")+
   scale_y_continuous(limits = c(0, 70), breaks = seq(0, 100, by = 10), expand = c(0, 0))
@@ -408,8 +395,7 @@ p_ACHS_vac_noSeasonal_ratio <- ggplot(df_MSA, aes(x = ratio_vac_noSeasonal)) +
   theme(
     plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"),
     panel.grid = element_blank(),
-    text = element_text(family = "Arial")
-  )+
+    text = element_text(family = "Arial"))+
   xlab("Percentage of nonseasonal vacant housing units") + 
   ylab("Frequency") +
   scale_x_continuous(limits = c(0, 18), breaks = seq(0, 18, by = 1), expand = c(0, 0)) +
@@ -473,7 +459,7 @@ p <- (p_ACHS_vac_noSeasonal_ratio + p_ACHS_vac_other_ratio) / (p_USPS_vac_ratio 
   )
 p
 
-#ggsave(filename = "SI_Fig_22.pdf", plot = p, width = 180, height = 90, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig_21.pdf", plot = p, width = 180, height = 90, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -510,9 +496,7 @@ p_ratio_vac <- ggplot() +
       title.hjust = 0.5,
       direction = "horizontal",
       barwidth = 7,
-      barheight = 0.4
-    )
-  ) +
+      barheight = 0.4)) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
@@ -530,7 +514,7 @@ p_ratio_vac <- ggplot() +
 p_ratio_vac
 
 
-#ggsave(filename = "SI_Fig21_a.pdf", plot = p_ratio_vac, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig20_a.pdf", plot = p_ratio_vac, width = 120, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
@@ -597,7 +581,7 @@ map_population <- ggplot() +
     panel.grid = element_blank(),
     legend.position = "none",
     text = element_text(family = "Arial")
-  )
+    )
 
 map_fill_legend <- ggplot(df_county) +
   geom_sf(aes(geometry = geometry, fill = perCapita_vac), alpha = 0) +  # invisible layer
@@ -606,17 +590,14 @@ map_fill_legend <- ggplot(df_county) +
     trans = "log",
     breaks = custom_breaks,
     name = "Vacant houses per capita",
-    na.value = "darkgrey"
-  ) +
+    na.value = "darkgrey") +
   guides(
     fill = guide_colorbar(
       barwidth = 7,
       barheight = 0.4,
       title.position = "top",
       direction = "horizontal",
-      label.theme = element_text(size = 6) 
-    )
-  ) +
+      label.theme = element_text(size = 6))) +
   theme_void() +
   theme(text = element_text(family = "Arial"))
 
@@ -693,17 +674,14 @@ map_fill_legend <- ggplot(df_county) +
     trans = "log",
     breaks = custom_breaks,
     name = "Occupied housing units per capita",
-    na.value = "darkgrey"
-  ) +
+    na.value = "darkgrey") +
   guides(
     fill = guide_colorbar(
       barwidth = 7,
       barheight = 0.4,
       title.position = "top",
       direction = "horizontal",
-      label.theme = element_text(size = 6) 
-    )
-  ) +
+      label.theme = element_text(size = 6))) +
   theme_void() +
   theme(text = element_text(family = "Arial"))
 
@@ -736,8 +714,7 @@ occupied_plot <- ggplot(df_county, aes(x = POPESTIMATE, y = Occupied)) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.4, 0.4, 0.2, 0.2, "cm"), #t,r,b,l
-    legend.position = "none"
-  )+
+    legend.position = "none") +
   theme(text = element_text(family = "Arial"))
 occupied_plot 
 

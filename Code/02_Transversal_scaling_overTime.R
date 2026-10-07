@@ -39,9 +39,8 @@ extract_scaling_results <- function(df_source, area = c("County", "MSA"), outcom
           Occupied = sum(Occupied, na.rm = TRUE),
           Total = sum(Total, na.rm = TRUE),
           POPESTIMATE = sum(POPESTIMATE, na.rm = TRUE),
-          .groups = "drop"
-        )
-    }
+          .groups = "drop")
+      }
     
     total_units <- nrow(df_year_pre)
     
@@ -90,8 +89,8 @@ extract_scaling_results <- function(df_source, area = c("County", "MSA"), outcom
       beta_se = sprintf("%.10f", se_beta2),  # add robust SE column
       alpha_se = sprintf("%.10f", se_alpha2),
       stringsAsFactors = FALSE
-    )
-  })
+      )
+    })
   
   final_results <- bind_rows(all_results) %>%
     mutate(
@@ -99,7 +98,7 @@ extract_scaling_results <- function(df_source, area = c("County", "MSA"), outcom
       beta_upper = as.numeric(sub(".*;([^]]+)\\]", "\\1", beta_CI)),
       alpha_lower = as.numeric(sub("\\[([^;]+);.*", "\\1", alpha_CI)),
       alpha_upper = as.numeric(sub(".*;([^]]+)\\]", "\\1", alpha_CI))
-    )
+      )
   
   return(final_results)
 }
@@ -157,7 +156,7 @@ all_results <- bind_rows(
   t_msa_occ %>% mutate(area = "MSA", outcome = "Occupied"),
   t_msa_vac %>% mutate(area = "MSA", outcome = "Vacant"),
   t_msa_tot %>% mutate(area = "MSA", outcome = "Total")
-)
+  )
 
 all_results <- all_results %>%
   mutate(
@@ -170,7 +169,7 @@ all_results <- all_results %>%
     alpha_lower = as.numeric(alpha_lower),
     alpha_upper = as.numeric(alpha_upper),
     alpha_se = as.numeric(alpha_se)
-  )
+    )
 
 # Plot all exponents together --------------------------------------------------
 p_slope <- ggplot(all_results, aes(x = year, y = beta, color = outcome, linetype = area, shape = outcome)) +
@@ -191,8 +190,7 @@ p_slope <- ggplot(all_results, aes(x = year, y = beta, color = outcome, linetype
     legend.position = c(0.05, 0.95),
     legend.justification = c("left", "top"),
     axis.text.x = element_text(angle = 90, vjust = 0.5),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   scale_x_continuous(breaks = unique(all_results$year), labels = unique(all_results$year)) +
   scale_y_continuous(limits = c(0.8, 1.1), breaks = seq(0.8, 1.1, by = 0.05), expand = c(0, 0))
 p_slope
@@ -215,8 +213,7 @@ p_intercept <- ggplot(all_results, aes(x = year, y = alpha, color = outcome, lin
     legend.position = c(0.05, 0.95),
     legend.justification = c("left", "top"),
     axis.text.x = element_text(angle = 90, vjust = 0.5),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   scale_x_continuous(breaks = unique(all_results$year), labels = unique(all_results$year)) +
   scale_y_continuous(limits = c(-3, 0), breaks = seq(-3, 0, by = 0.5), expand = c(0, 0))
 p_intercept
@@ -270,10 +267,7 @@ trend_years <- emmeans::emtrends(model_Time_MSA,
 #   geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = 0.2) +
 #   geom_smooth(method = "lm", se = FALSE, color = "blue") +
 #   theme_minimal() +
-#   labs(
-#     x = "Year",
-#     y = "Slope"
-#   )
+#   labs(x = "Year", y = "Slope")
 
 
 

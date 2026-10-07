@@ -147,10 +147,7 @@ housing_ua_overlap <- housing_ua_small %>%
 
 
 # Compute intersection polygons only for relevant urban areas
-int <- st_intersection(
-  housing_ua_overlap,
-  cbsa_metro
-) %>%
+int <- st_intersection(housing_ua_overlap, cbsa_metro) %>%
   mutate(
     overlap_area = as.numeric(st_area(geometry))
   )
@@ -232,8 +229,7 @@ ua_vacant_p <- ggplot(housing_urbanAreas_df, aes(x = Population, y = Vacant)) +
   theme_classic(base_size = 10) +
   theme(
     plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"), #t,r,b,l
-    legend.position = "none"
-  )+
+    legend.position = "none") +
   theme(text = element_text(family = "Arial"))
 ua_vacant_p
 
@@ -268,7 +264,7 @@ MSAua_vacant_p <- ggplot(housing_ua_MSA, aes(x = Population, y = Vacant)) +
   theme(
     plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"), #t,r,b,l
     legend.position = "none"
-  )+
+  ) +
   theme(text = element_text(family = "Arial"))
 MSAua_vacant_p
 

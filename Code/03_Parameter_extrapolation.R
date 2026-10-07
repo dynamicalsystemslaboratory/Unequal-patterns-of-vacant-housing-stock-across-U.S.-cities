@@ -101,8 +101,7 @@ p_slope_comb <- ggplot() +
   geom_hline(yintercept = 1.0, linetype = "dashed", color = "black", size = 0.4) +
   scale_color_manual(values = c(
     "Occupied" = "#3f4e2a", "Vacant" = "#602f42", "Total" = "#8c510a",
-    model_colors
-  )) +
+    model_colors)) +
   scale_fill_manual(values = model_colors, guide = FALSE) +
   scale_shape_manual(values = c("Occupied" = 17, "Vacant" = 15, "Total" = 19)) +
   scale_linetype_manual(values = c("MSA" = "solid", model_linetypes)) +
@@ -114,8 +113,7 @@ p_slope_comb <- ggplot() +
     legend.position = "none",
     legend.justification = c("left", "top"),
     axis.text.x = element_text(angle = 90, vjust = 0.5),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   scale_x_continuous(breaks = seq(min(obs_df$year, na.rm = TRUE), 2050, by = 4), limits = c(min(obs_df$year, na.rm = TRUE), 2050)) +
   scale_y_continuous(limits = c(0.6, 1.05), breaks = seq(0.6, 1.05, by = 0.05), expand = c(0, 0))
 
@@ -146,18 +144,18 @@ pred_lin_ci <- predict(Alpha_weighted_trend, newdata = years_extended, interval 
 pred_lin_df <- tibble(
   year = years_extended$year,
   model = "Linear",
-  fit  = as.numeric(pred_lin_ci[, "fit"]),
-  lwr  = as.numeric(pred_lin_ci[, "lwr"]),
-  upr  = as.numeric(pred_lin_ci[, "upr"])
+  fit = as.numeric(pred_lin_ci[, "fit"]),
+  lwr = as.numeric(pred_lin_ci[, "lwr"]),
+  upr = as.numeric(pred_lin_ci[, "upr"])
 )
 
 pred_spline_ci <- predict(Alpha_weighted_spline, newdata = years_extended, interval = "confidence", level = 0.95)
 pred_spline_df <- tibble(
   year = years_extended$year,
   model = "Spline",
-  fit  = as.numeric(pred_spline_ci[, "fit"]),
-  lwr  = as.numeric(pred_spline_ci[, "lwr"]),
-  upr  = as.numeric(pred_spline_ci[, "upr"])
+  fit = as.numeric(pred_spline_ci[, "fit"]),
+  lwr = as.numeric(pred_spline_ci[, "lwr"]),
+  upr = as.numeric(pred_spline_ci[, "upr"])
 )
 
 Alpha_preds_ci_df <- bind_rows(pred_lin_df, pred_spline_df)
@@ -186,8 +184,7 @@ p_intercept_comb <- ggplot() +
                   nudge_x = 1, direction = "y", hjust = 0, segment.size = 0.2, inherit.aes = FALSE) +
   scale_color_manual(values = c(
     "Occupied" = "#3f4e2a", "Vacant" = "#602f42", "Total" = "#8c510a",
-    model_colors
-  )) +
+    model_colors)) +
   scale_fill_manual(values = model_colors, guide = FALSE) +
   scale_shape_manual(values = c("Occupied" = 17, "Vacant" = 15, "Total" = 19)) +
   scale_linetype_manual(values = c("MSA" = "solid", model_linetypes)) +
@@ -197,8 +194,7 @@ p_intercept_comb <- ggplot() +
     plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"),  
     legend.position = "none",
     axis.text.x = element_text(angle = 90, vjust = 0.5),
-    text = element_text(family = "Arial")
-  ) +
+    text = element_text(family = "Arial")) +
   scale_x_continuous(breaks = seq(min(obs_df$year, na.rm = TRUE), 2050, by = 4), limits = c(min(obs_df$year, na.rm = TRUE), 2050)) +
   scale_y_continuous(limits = c(-4, 1.5), breaks = seq(-4, 1.5, by = 0.5), expand = c(0, 0))
 p_intercept_comb
@@ -212,7 +208,7 @@ p_combined
 
 
 
-#ggsave(filename = "SI_Fig6", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
+#ggsave(filename = "SI_Fig8", plot = p_combined, width = 180, height = 80, units = "mm", dpi = 900, device = cairo_pdf)
 
 
 
