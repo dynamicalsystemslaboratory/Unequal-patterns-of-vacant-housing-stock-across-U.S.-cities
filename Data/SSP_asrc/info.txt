@@ -1,0 +1,3 @@
+See Hauer 2019 for original dataset:
+
+Hauer, M. Population projections for U.S. counties by age, sex, and race controlled to shared socioeconomic pathway. Sci Data 6, 190005 (2019). https://doi.org/10.1038/sdata.2019.5
